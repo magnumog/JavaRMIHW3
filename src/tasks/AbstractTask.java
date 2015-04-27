@@ -1,5 +1,6 @@
 package tasks;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -8,16 +9,39 @@ import api.Result;
 import api.Task;
 
 public abstract class AbstractTask<T> implements Task<T>{
-	private UUID uuid;
-	protected ArrayList<CompletableFuture<Result<T>>> futures;
+	
+	
+	protected Optional<Result<T>> result;
+	
+	protected Optional<UUID> parentuuid;
+	
+	protected UUID uuid;
 		
+	public AbstractTask(UUID uuid){
+		this.uuid = uuid;
+	}
+	
+	public AbstractTask(Optional<UUID> parentuuid){
+		this();
+		this.parentuuid = parentuuid;
+	}
+	
+	
+	
 	public AbstractTask(){
-		uuid = UUID.randomUUID();
-		futures = new ArrayList<CompletableFuture<Result<T>>>();
+		this.uuid = UUID.randomUUID();
 	}
 	
 	public UUID getUUID(){
 		return this.uuid;
 	}
 	
+	public UUID getParentUUID(){
+		return this.parentuuid.get();
+	}
+	
+	
+	public Result<T> result(){
+		return result.get();
+	}
 }

@@ -14,8 +14,9 @@ import util.Either;
  */
 public interface Task<T> {
 	
-	public <A extends Task<T>,B extends Result<T>> Either<A, B> execute();
-	
+	public <A extends List<Task<T>>, B extends Result<T>> Either<A, B> execute();
+
+	public <A extends Result<T>> boolean registerResult(A result);
 
 }
 

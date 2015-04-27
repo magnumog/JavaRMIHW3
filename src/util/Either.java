@@ -1,44 +1,40 @@
 package util;
 
+import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class Either<A,B> {
-    private A left = null;
-    private B right = null;
-
-    private Either(A a,B b) {
-        left = a;
-        right = b;
+public final class Either<L,R>
+{
+    public static <L,R> Either<L,R> left(L value) {
+        return new Either<>(Optional.of(value), Optional.empty());
     }
-
-    public static <A,B> Either<A,B> left(A a) {
-        return new Either<A,B>(a,null);
+    public static <L,R> Either<L,R> right(R value) {
+        return new Either<>(Optional.empty(), Optional.of(value));
     }
-
-    public A left() {
-        return left;
+    private final Optional<L> left;
+    private final Optional<R> right;
+    private Either(Optional<L> l, Optional<R> r) {
+      left=l;
+      right=r;
     }
-
-    public boolean isLeft() {
-        return left != null;
+    public <T> T map(
+        Function<? super L, ? extends T> lFunc,
+        Function<? super R, ? extends T> rFunc)
+    {
+        return left.map(lFunc).orElseGet(()->right.map(rFunc).get());
     }
-
-    public boolean isRight() {
-        return right != null;
+    public <T> Either<T,R> mapLeft(Function<? super L, ? extends T> lFunc)
+    {
+        return new Either<>(left.map(lFunc),right);
     }
-
-    public B right() {
-        return right;
+    public <T> Either<L,T> mapRight(Function<? super R, ? extends T> rFunc)
+    {
+        return new Either<>(left, right.map(rFunc));
     }
-
-    public static <A,B> Either<A,B> right(B b) {
-        return new Either<A,B>(null,b);
-    }
-
-   public void fold(Function<A, ?> leftOption, Function<B, ?> rightOption) {
-        if(right == null)
-            leftOption.apply(left);
-        else
-            rightOption.apply(right);
+    public void apply(Consumer<? super L> lFunc, Consumer<? super R> rFunc)
+    {
+        left.ifPresent(lFunc);
+        right.ifPresent(rFunc);
     }
 }

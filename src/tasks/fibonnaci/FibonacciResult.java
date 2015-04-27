@@ -1,11 +1,14 @@
 package tasks.fibonnaci;
 
-import api.Result;
+import java.util.UUID;
 
-public class FibonacciResult implements Result<Integer> {
+import results.AbstractResult;
+
+public class FibonacciResult extends AbstractResult<Integer> {
 	
 	Integer res;
-	public FibonacciResult(Integer res){
+	public FibonacciResult(UUID owner, Integer res){
+		super(owner);
 		this.res = res;
 	}
 	

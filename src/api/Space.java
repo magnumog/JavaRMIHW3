@@ -13,12 +13,12 @@ public interface Space extends Remote {
 	public static String SERVICE_NAME = "Space";
 	
 	public void putTask(Task<?> task) throws RemoteException;
-	public void putTasks(List<Task<?>> tasks) throws RemoteException;
-	
-	public void putResult(Result<?> result) throws RemoteException;
-	public void putResults(List<Result<?>> results) throws RemoteException;
-	
-	public List<Result<?>> takeResults();
+	public <T> void putTasks(List<Task<T>> tasks) throws RemoteException;
 
+
+	public List<Result<?>> takeResults();
+	
+	
+	public void register(RemoteComputer comp);
 	
 }
