@@ -2,11 +2,10 @@ package api;
 
 import java.util.List;
 
-<<<<<<< HEAD
-=======
+
 import java.util.List;
 
->>>>>>> master
+
 import util.Either;
 /**
  * 
