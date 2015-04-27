@@ -6,7 +6,6 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,7 +34,8 @@ public class Client<V> extends JFrame {
 		Logger.getLogger(Client.class.getCanonicalName()).log(Level.INFO, "Client time: {0}", System.nanoTime()-clientStartTime/1000000);
 	}
 	
-	public List<Integer> processJob() {
+	public V processJob() throws RemoteException {
+		//HOW TO DO THIS
 		return null;
 	}
 	
