@@ -15,22 +15,22 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 	}
 
 	@Override
-	public void putTask(Task<?> task) {
+	public void putTask(Task<?> task) throws RemoteException{
 
 	}
 
 	@Override
-	public void putTasks(List<Task<?>> tasks) {
+	public void putTasks(List<Task<?>> tasks) throws RemoteException {
 
 	}
 
 	@Override
-	public void putResult(Result<?> result) {
+	public void putResult(Result<?> result) throws RemoteException {
 
 	}
 
 	@Override
-	public void putResults(List<Result<?>> results) {
+	public void putResults(List<Result<?>> results) throws RemoteException {
 
 	}
 
