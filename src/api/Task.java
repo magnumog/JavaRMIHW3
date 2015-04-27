@@ -8,6 +8,4 @@ package api;
 public interface Task<T> {
 	
 	public Result<T> execute();
-	
-	
 }
