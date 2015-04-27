@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import tasks.Client;
 
 public class TspClient extends Client<List<Integer>> {
+	private static final long serialVersionUID = 1L;
 	private static final int NUM_PIXALS = 600;
 	private static final double[][] CITIES = 
     	{
@@ -34,8 +35,8 @@ public class TspClient extends Client<List<Integer>> {
     	{ 3, 6 }
     };
 	
-	public TspClient() throws RemoteException, NotBoundException, MalformedURLException {
-		super();
+	public TspClient(String domain) throws RemoteException, NotBoundException, MalformedURLException {
+		super("Euclidian TSP",domain);
 	}
 	
 	public static void main(String[] args) throws Exception {
@@ -47,7 +48,7 @@ public class TspClient extends Client<List<Integer>> {
 			domain = args[0];
 		}
 		
-		final TspClient client = new TspClient();
+		final TspClient client = new TspClient(domain);
 		client.begin();
 		final List<Integer> value = client.processJob();
 		client.add( client.getLabel(value.toArray(new Integer[0])));
