@@ -7,6 +7,8 @@ import java.util.List;
 
 import tasks.Client;
 
+
+
 public class FibonnaciClient extends Client<FibonacciResult> {
 
 	public FibonnaciClient(String title, String domain) throws RemoteException, NotBoundException, MalformedURLException {
