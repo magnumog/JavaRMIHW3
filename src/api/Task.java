@@ -1,5 +1,8 @@
 package api;
 
+import java.util.List;
+
+import util.Either;
 /**
  * 
  * The interface Task which takes inn, 
@@ -7,5 +10,8 @@ package api;
  */
 public interface Task<T> {
 	
-	public Result<T> execute();
+	public <A extends Task<T>,B extends Result<T>> Either<A, B> execute();
+	
+
 }
+

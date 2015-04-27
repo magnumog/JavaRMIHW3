@@ -1,4 +1,4 @@
-package tasks;
+package tasks.tsp;
 
 public class TSP {
 
