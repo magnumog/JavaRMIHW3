@@ -5,6 +5,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import util.BlockingList;
 import api.RemoteComputer;
@@ -12,24 +13,30 @@ import api.Result;
 import api.Space;
 import api.Task;
 
+import java.util.concurrent.LinkedBlockingQueue;
+
 public class SpaceImpl extends UnicastRemoteObject implements Space {
 	
-	private BlockingList<Task<?>> tasks;
+	private LinkedBlockingQueue<Task<?>> tasks;
 	private BlockingList<Task<?>> waitingTasks;
-	
+	private BlockingList<Result<?>> results;
+	int i = 0;
 	protected SpaceImpl() throws RemoteException {
 		super();
-		tasks = new BlockingList<Task<?>>();
+		tasks = new LinkedBlockingQueue<Task<?>>();
 		waitingTasks = new BlockingList<Task<?>>();
+		results = new BlockingList<Result<?>>();
 	}
 
 	@Override
 	public void putTask(Task<?> task) throws RemoteException{
-			tasks.addB(task);
+			tasks.add(task);
+			i += 1;
 	}
 	@Override
 	public <T> void putTasks(List<Task<T>> tasks) throws RemoteException {
-		this.tasks.addAllB(tasks);	
+		this.tasks.addAll(tasks);
+		i += tasks.size();
 	}
 
 	@Override
@@ -41,26 +48,41 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 	@Override
 	public <A extends Result<?>> void registerResult(A result) throws RemoteException {
 		synchronized(waitingTasks){
+			ArrayList<Task<?>> tasksToRemove = new ArrayList<Task<?>>();
+			boolean isSubgoal = false;
 			for (Task<?> task: waitingTasks){
-				if (result.getOwner().equals(task.getUUID())){
+				if (result.getOwner().toString().equals(task.getUUID().toString())){
+					isSubgoal = true;
 					if (task.registerResult(result)){
-						waitingTasks.removeB(task);
-						tasks.addB(task);
+						tasksToRemove.add(task);
+						tasks.add(task);
 					}
 				}
 			}
+			
+			if (isSubgoal == false){
+				results.add(result);
+			}
+			waitingTasks.removeAll(tasksToRemove);
 		}
 	}
 	
 	
 	@Override
-	public void register(RemoteComputer comp) {
-		new ComputerProxy(comp, tasks).run();
+	public void register(RemoteComputer comp) throws RemoteException {
+		(new Thread(new ComputerProxy(comp, this.tasks))).start();
 	}
 
 	@Override
-	public List<Result<?>> takeResults() {
-		
+	public Result<?> takeResult(UUID uuid) {
+		synchronized(results){
+			for (Result<?> result: results){
+				if (result.getOwner().equals(uuid)){
+					System.out.println(i);
+					return result;
+				}
+			}
+		}
 		return null;
 	}
 	

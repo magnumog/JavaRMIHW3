@@ -1,6 +1,8 @@
 package system;
 
 
+import java.util.concurrent.LinkedBlockingQueue;
+
 import util.BlockingList;
 import api.Task;
 import api.RemoteComputer;
@@ -8,9 +10,9 @@ import api.Result;
 
 public class ComputerProxy implements Runnable{
 	private RemoteComputer computer;
-	private BlockingList<Task<?>> taskList;
+	private LinkedBlockingQueue<Task<?>> taskList;
 	
-	public ComputerProxy(RemoteComputer computer, BlockingList<Task<?>> taskList){
+	public ComputerProxy(RemoteComputer computer, LinkedBlockingQueue<Task<?>> taskList){
 		this.computer =  computer;
 		this.taskList = taskList;
 	}
@@ -18,17 +20,20 @@ public class ComputerProxy implements Runnable{
 	public void run(){
 		while(true){
 			if (!taskList.isEmpty()){
-				Task<?> task = taskList.get(0);
-				try {
-					this.taskList.removeB(task);
-					computer.execute(task);
+				Task<?> task = null;	
+
+					try {
+						task = taskList.poll();
+						this.taskList.remove(task);
+						if (task != null){
+							computer.execute(task);
+						}
+					}
+					catch(Exception e){
+						this.taskList.add(task);
+						System.out.println(e);
+					}
 				}
-				catch(Exception e){
-					this.taskList.addB(task);
-					System.out.println(e);
-					return;
-				}
-			}
 		}
 	}
 }

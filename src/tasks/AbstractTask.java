@@ -11,9 +11,8 @@ import api.Task;
 public abstract class AbstractTask<T> implements Task<T>{
 	
 	
-	protected Optional<Result<T>> result;
 	
-	protected Optional<UUID> parentuuid;
+	protected UUID parentuuid;
 	
 	protected UUID uuid;
 	
@@ -22,18 +21,19 @@ public abstract class AbstractTask<T> implements Task<T>{
 
 		
 	public AbstractTask(UUID uuid){
-		this.uuid = uuid;
+		this.parentuuid = uuid;
+		this.uuid = UUID.randomUUID();
+		this.results = new ArrayList<Result<T>>();
+
 	}
 	
-	public AbstractTask(Optional<UUID> parentuuid){
-		this();
-		this.parentuuid = parentuuid;
-	}
+
 	
 	
 	
 	public AbstractTask(){
 		this.uuid = UUID.randomUUID();
+		this.parentuuid = UUID.randomUUID();
 		this.results = new ArrayList<Result<T>>();
 	}
 	
@@ -42,11 +42,8 @@ public abstract class AbstractTask<T> implements Task<T>{
 	}
 	
 	public UUID getParentUUID(){
-		return this.parentuuid.get();
+		return this.parentuuid;
 	}
 	
-	
-	public Result<T> result(){
-		return result.get();
-	}
+
 }

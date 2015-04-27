@@ -4,15 +4,16 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 import api.RemoteComputer;
-import api.Result;
 import api.Space;
 import api.Task;
 
-public class Computer implements RemoteComputer {
+public class Computer extends UnicastRemoteObject implements RemoteComputer {
 	
 	
+
 	private Space space;
 	public Computer(String spaceDomain) throws RemoteException, NotBoundException, MalformedURLException{
 		String url = "rmi://" + spaceDomain + ":" + Space.PORT + "/" + Space.SERVICE_NAME;
@@ -34,9 +35,9 @@ public class Computer implements RemoteComputer {
 		}, 
 		right -> {
 			try {
+				System.out.println(right.value());
 				space.registerResult(right);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		});
