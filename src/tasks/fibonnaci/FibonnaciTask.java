@@ -1,6 +1,10 @@
 package tasks.fibonnaci;
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

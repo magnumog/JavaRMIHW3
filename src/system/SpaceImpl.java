@@ -18,26 +18,35 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 	@Override
 	public void putTask(Task<?> task) throws RemoteException{
 
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void putTasks(List<Task<?>> tasks) throws RemoteException {
 
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void putResult(Result<?> result) throws RemoteException {
 
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void putResults(List<Result<?>> results) throws RemoteException {
 
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public List<Result<?>> takeResults() {
 
+		// TODO Auto-generated method stub
 		return null;
 	}
 
