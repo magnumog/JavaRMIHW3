@@ -1,6 +1,7 @@
 package system;
 
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
@@ -40,4 +41,8 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 		return null;
 	}
 
+	public static void main(String[] args) throws Exception {
+		System.setSecurityManager(new SecurityManager());
+		LocateRegistry.createRegistry(Space.PORT).rebind(Space.SERVICE_NAME, new SpaceImpl());
+	}
 }
