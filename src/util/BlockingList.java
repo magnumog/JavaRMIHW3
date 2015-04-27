@@ -20,6 +20,13 @@ public class BlockingList<T> extends ArrayList<T>{
 	}
 	
 	
+	public void removeB(T t){
+		synchronized(this){
+			this.remove(t);
+		}
+	}
+	
+	
 	public void addB(T t){
 		synchronized(this){
 			this.add(t);

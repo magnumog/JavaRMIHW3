@@ -20,11 +20,11 @@ public class ComputerProxy implements Runnable{
 			if (!taskList.isEmpty()){
 				Task<?> task = taskList.get(0);
 				try {
-					this.taskList.remove(task);
+					this.taskList.removeB(task);
 					computer.execute(task);
 				}
 				catch(Exception e){
-					this.taskList.add(task);
+					this.taskList.addB(task);
 					System.out.println(e);
 					return;
 				}

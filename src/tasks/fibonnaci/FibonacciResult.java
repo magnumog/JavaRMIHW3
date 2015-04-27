@@ -8,8 +8,7 @@ public class FibonacciResult extends AbstractResult<Integer> {
 	
 	Integer res;
 	public FibonacciResult(UUID owner, Integer res){
-		super(owner);
-		this.res = res;
+		super(owner, res);
 	}
 	
 }

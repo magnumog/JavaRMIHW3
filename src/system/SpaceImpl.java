@@ -15,7 +15,6 @@ import api.Task;
 public class SpaceImpl extends UnicastRemoteObject implements Space {
 	
 	private BlockingList<Task<?>> tasks;
-	private BlockingList<Result<?>> results;
 	private BlockingList<Task<?>> waitingTasks;
 	
 	protected SpaceImpl() throws RemoteException {
@@ -33,6 +32,26 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 		this.tasks.addAllB(tasks);	
 	}
 
+	@Override
+	public void putWaitingTask(Task<?> task) throws RemoteException {
+		this.waitingTasks.addB(task);
+	}
+	
+
+	@Override
+	public <A extends Result<?>> void registerResult(A result) throws RemoteException {
+		synchronized(waitingTasks){
+			for (Task<?> task: waitingTasks){
+				if (result.getOwner().equals(task.getUUID())){
+					if (task.registerResult(result)){
+						waitingTasks.removeB(task);
+						tasks.addB(task);
+					}
+				}
+			}
+		}
+	}
+	
 	
 	@Override
 	public void register(RemoteComputer comp) {
@@ -51,7 +70,6 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 		System.setSecurityManager(new SecurityManager());
 		LocateRegistry.createRegistry(Space.PORT).rebind(Space.SERVICE_NAME, new SpaceImpl());
 	}
-
 
 
 

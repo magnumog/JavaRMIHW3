@@ -26,6 +26,7 @@ public class Computer implements RemoteComputer {
 		task.execute().apply(left -> {
 			try {
 				space.putTasks(left);
+				space.putWaitingTask(task);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -33,9 +34,7 @@ public class Computer implements RemoteComputer {
 		}, 
 		right -> {
 			try {
-				
-				
-				
+				space.registerResult(right);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

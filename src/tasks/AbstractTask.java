@@ -16,6 +16,10 @@ public abstract class AbstractTask<T> implements Task<T>{
 	protected Optional<UUID> parentuuid;
 	
 	protected UUID uuid;
+	
+	
+	protected ArrayList<Result<T>> results;
+
 		
 	public AbstractTask(UUID uuid){
 		this.uuid = uuid;
@@ -30,6 +34,7 @@ public abstract class AbstractTask<T> implements Task<T>{
 	
 	public AbstractTask(){
 		this.uuid = UUID.randomUUID();
+		this.results = new ArrayList<Result<T>>();
 	}
 	
 	public UUID getUUID(){
