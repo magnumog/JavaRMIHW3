@@ -5,7 +5,6 @@ import java.util.List;
 /**
  * 
  * Space interface
- * @param <T>
  */
 public interface Space {
 	
@@ -16,8 +15,6 @@ public interface Space {
 	public void putResults(List<Result<?>> results);
 	
 	public List<Result<?>> takeResults();
-	
-	
-	
+
 	
 }

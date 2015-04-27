@@ -16,31 +16,27 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 
 	@Override
 	public void putTask(Task<?> task) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void putTasks(List<Task<?>> tasks) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void putResult(Result<?> result) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void putResults(List<Result<?>> results) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public List<Result<?>> takeResults() {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
