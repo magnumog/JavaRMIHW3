@@ -3,6 +3,7 @@ package api;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 
@@ -17,11 +18,11 @@ public interface Space extends Remote {
 	
 	
 	public void putWaitingTask(Task<?> task) throws RemoteException;
+	
 	public <A extends Result<?>> void registerResult(A result) throws RemoteException;
 
-	public List<Result<?>> takeResults();
+	public Result<?> takeResult(UUID uuid) throws RemoteException;
 	
-	
-	public void register(RemoteComputer comp);
+	public void register(RemoteComputer comp) throws RemoteException;
 	
 }
