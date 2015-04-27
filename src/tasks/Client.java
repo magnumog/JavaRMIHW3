@@ -3,6 +3,7 @@ package tasks;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.net.MalformedURLException;
+import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
@@ -13,11 +14,17 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
+import api.Space;
+
 public class Client<V> extends JFrame {
+	private static final long serialVersionUID = 1L;
 	private long clientStartTime;
 	
-	public Client() throws RemoteException,NotBoundException,MalformedURLException {
-		
+	public Client(String title, String domainName) throws RemoteException,NotBoundException,MalformedURLException {
+		setTitle(title);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		String url = "rmi://" + domainName + ":" + Space.PORT + "/" + Space.SERVICE_NAME;
+		Space space = (Space)Naming.lookup(url);
 	}
 	
 	public void begin() {
@@ -29,7 +36,6 @@ public class Client<V> extends JFrame {
 	}
 	
 	public List<Integer> processJob() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
