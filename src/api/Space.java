@@ -5,7 +5,6 @@ import java.util.List;
 /**
  * 
  * Space interface
- * @param <T>
  */
 public interface Space {
 	
