@@ -6,5 +6,5 @@ package api;
  * @param <T>
  */
 public interface Result<T> {
-
+	
 }
