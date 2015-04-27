@@ -6,5 +6,8 @@ package api;
  * @param <T>
  */
 public interface Task<T> {
-
+	
+	public Result<T> execute();
+	
+	
 }
