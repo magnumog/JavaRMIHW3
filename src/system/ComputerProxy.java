@@ -32,6 +32,7 @@ public class ComputerProxy implements Runnable{
 					catch(Exception e){
 						this.taskList.add(task);
 						System.out.println(e);
+						return;
 					}
 				}
 		}
