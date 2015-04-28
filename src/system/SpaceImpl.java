@@ -22,6 +22,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 	private BlockingList<Task<?>> waitingTasks;
 	private BlockingList<Result<?>> results;
 	private HashMap<UUID, Task<?>> waitingTaskMap;
+	private HashMap<UUID, Result<?>> resultMap;
 	int i = 0;
 	int j = 0;
 	protected SpaceImpl() throws RemoteException {
@@ -30,6 +31,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 		waitingTasks = new BlockingList<Task<?>>();
 		results = new BlockingList<Result<?>>();
 		waitingTaskMap = new HashMap<UUID, Task<?>>();
+		resultMap = new HashMap<UUID, Result<?>>();
 	}
 
 	@Override
@@ -52,17 +54,21 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 	@Override
 	public <A extends Result<?>> void registerResult(A result) throws RemoteException {
 			boolean isSubgoal = false;
+			synchronized(waitingTaskMap){
 			if (waitingTaskMap.containsKey(result.getOwner())){
 				Task<?> task = waitingTaskMap.get(result.getOwner());
 				if (task.registerResult(result)){
 					isSubgoal = true;
-					tasks.add(task);
+					synchronized(tasks){
+						tasks.add(task);
+					}
 					waitingTaskMap.remove(task.getUUID());
 				}
 			}
+			}
 
 			if (isSubgoal == false){
-				results.add(result);
+				resultMap.put(result.getOwner(), result);
 			}
 	}
 	
@@ -75,13 +81,9 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 
 	@Override
 	public Result<?> takeResult(UUID uuid) {
-		synchronized(results){
-			for (Result<?> result: results){
-				if (result.getOwner().equals(uuid)){
-					return result;
-				}
-			}
-		}
+		Result<?> result = resultMap.get(uuid);
+		if (result != null)
+			return result;
 		return null;
 	}
 	
