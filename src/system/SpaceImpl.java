@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,12 +21,15 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 	private LinkedBlockingQueue<Task<?>> tasks;
 	private BlockingList<Task<?>> waitingTasks;
 	private BlockingList<Result<?>> results;
+	private HashMap<UUID, Task<?>> waitingTaskMap;
 	int i = 0;
+	int j = 0;
 	protected SpaceImpl() throws RemoteException {
 		super();
 		tasks = new LinkedBlockingQueue<Task<?>>();
 		waitingTasks = new BlockingList<Task<?>>();
 		results = new BlockingList<Result<?>>();
+		waitingTaskMap = new HashMap<UUID, Task<?>>();
 	}
 
 	@Override
@@ -41,35 +45,31 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 
 	@Override
 	public void putWaitingTask(Task<?> task) throws RemoteException {
-		this.waitingTasks.addB(task);
+		this.waitingTaskMap.put(task.getUUID(), task);
 	}
 	
 
 	@Override
 	public <A extends Result<?>> void registerResult(A result) throws RemoteException {
-		synchronized(waitingTasks){
-			ArrayList<Task<?>> tasksToRemove = new ArrayList<Task<?>>();
 			boolean isSubgoal = false;
-			for (Task<?> task: waitingTasks){
-				if (result.getOwner().toString().equals(task.getUUID().toString())){
+			if (waitingTaskMap.containsKey(result.getOwner())){
+				Task<?> task = waitingTaskMap.get(result.getOwner());
+				if (task.registerResult(result)){
 					isSubgoal = true;
-					if (task.registerResult(result)){
-						tasksToRemove.add(task);
-						tasks.add(task);
-					}
+					tasks.add(task);
+					waitingTaskMap.remove(task.getUUID());
 				}
 			}
-			
+
 			if (isSubgoal == false){
 				results.add(result);
 			}
-			waitingTasks.removeAll(tasksToRemove);
-		}
 	}
 	
 	
 	@Override
 	public void register(RemoteComputer comp) throws RemoteException {
+		System.out.println("got computer");
 		(new Thread(new ComputerProxy(comp, this.tasks))).start();
 	}
 
@@ -78,7 +78,6 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 		synchronized(results){
 			for (Result<?> result: results){
 				if (result.getOwner().equals(uuid)){
-					System.out.println(i);
 					return result;
 				}
 			}

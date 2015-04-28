@@ -24,6 +24,7 @@ public class Computer extends UnicastRemoteObject implements RemoteComputer {
 	@Override
 	public <T> void execute(Task<T> task) throws RemoteException {
 		// TODO Auto-generated method stub
+		System.out.println(task);
 		task.execute().apply(left -> {
 			try {
 				space.putTasks(left);
@@ -35,7 +36,6 @@ public class Computer extends UnicastRemoteObject implements RemoteComputer {
 		}, 
 		right -> {
 			try {
-				System.out.println(right.value());
 				space.registerResult(right);
 			} catch (Exception e) {
 				e.printStackTrace();

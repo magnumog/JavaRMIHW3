@@ -8,6 +8,8 @@ import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,7 +53,8 @@ public class TspClient extends Client<List<Integer>> {
 		
 		final TspClient client = new TspClient(domain);
 		client.begin();
-		final List<Integer> value = client.processJob();
+		TSPtask task = new TSPtask(CITIES, new ArrayList<Integer>(Arrays.asList(1)));
+		final List<Integer> value = client.processTask(task);
 		client.add( client.getLabel(value.toArray(new Integer[0])));
 		client.end();
 	}
