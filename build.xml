@@ -41,7 +41,6 @@
 		<java jar="build/jar/Computer.jar" fork="true">
 			<arg value="${space_ip}"/>
 			<jvmarg value="-Djava.security.policy=src/server.policy"/>
-			<jvmarg value="-Djava.rmi.server.hostname=${space_ip}"/>
 		</java>
 	</target>
 
