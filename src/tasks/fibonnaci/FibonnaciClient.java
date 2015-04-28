@@ -23,10 +23,11 @@ public class FibonnaciClient extends Client<FibonacciResult> {
 		} else {
 			domain = args[0];
 		}
-		
+		client.begin();
 		final FibonnaciClient client = new FibonnaciClient("Fibonacci", domain);
 		final FibonnaciTask task = new FibonnaciTask(16);
 		System.out.println(client.processTask(task));
+		client.end();
 		
 //		client.add();
 	}
