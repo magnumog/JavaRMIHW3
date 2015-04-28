@@ -35,7 +35,9 @@ public class Client<V> extends JFrame {
 	}
 	
 	public void end() {
-		Logger.getLogger(Client.class.getCanonicalName()).log(Level.INFO, "Client time: {0}", System.nanoTime()-clientStartTime/1000000);
+		//long time = System.nanoTime()-clientStartTime/1000000;
+		//System.out.println("time used: " + time);
+		Logger.getLogger(Client.class.getCanonicalName()).log(Level.INFO, "Client time: {0}", (System.nanoTime()-clientStartTime)/1000000);
 	}
 	
 	public V processJob() throws RemoteException {
