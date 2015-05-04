@@ -42,6 +42,9 @@
 			<arg value="${space_ip}"/>
             <arg value="${multicore}"/>
             <arg value="${acm}"/>
+
+
+			<jvmarg value="-Djava.rmi.server.hostname=${computer_ip}"/>
 			<jvmarg value="-Djava.security.policy=src/server.policy"/>
 		</java>
 	</target>
