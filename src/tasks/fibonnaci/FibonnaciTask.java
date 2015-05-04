@@ -55,5 +55,9 @@ public class FibonnaciTask extends AbstractTask<Integer> {
 		return false;
 	}
 	
+	
+	public String toString(){
+		return ""+this.n;
+	}
 
 }

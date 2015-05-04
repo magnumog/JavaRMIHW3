@@ -12,11 +12,9 @@ import api.Result;
 public class ComputerProxy implements Runnable{
 	private RemoteComputer computer;
 	private LinkedBlockingQueue<Task<?>> taskList;
-	private ArrayList<Task<?>> myTasks;
 	public ComputerProxy(RemoteComputer computer, LinkedBlockingQueue<Task<?>> taskList){
 		this.computer =  computer;
 		this.taskList = taskList;
-		myTasks = new ArrayList<Task<?>>();
 	}
 
 	public void run(){
@@ -26,7 +24,6 @@ public class ComputerProxy implements Runnable{
 					try {
 						task = taskList.poll();
 						if (task != null){
-							myTasks.add(task);
 							computer.handleTask(task);
 						}
 					}

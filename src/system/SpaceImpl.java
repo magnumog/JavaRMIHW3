@@ -63,6 +63,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 						tasks.add(task);
 					}
 					waitingTaskMap.remove(task.getUUID());
+					System.out.println(waitingTaskMap.size());
 				}
 			}
 			}
