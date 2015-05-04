@@ -25,7 +25,7 @@ public class FibonnaciClient extends Client<FibonacciResult> {
 		}
 		final FibonnaciClient client = new FibonnaciClient("Fibonacci", domain);
 		client.begin();
-		final FibonnaciTask task = new FibonnaciTask(16);
+		final FibonnaciTask task = new FibonnaciTask(20);
 		System.out.println(client.processTask(task));
 		client.end();
 		

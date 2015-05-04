@@ -94,6 +94,13 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 		LocateRegistry.createRegistry(Space.PORT).rebind(Space.SERVICE_NAME, new SpaceImpl());
 	}
 
+	@Override
+	public void putUnfinishedTasks(List<Task<?>> tasks) throws RemoteException {
+		System.out.println("computer crashed, got unfinished tasks");
+		System.out.println(tasks);
+		this.tasks.addAll(tasks);		
+	}
+
 
 
 

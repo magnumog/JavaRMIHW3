@@ -16,6 +16,7 @@ public interface Space extends Remote {
 	public void putTask(Task<?> task) throws RemoteException;
 	public <T> void putTasks(List<Task<T>> tasks) throws RemoteException;
 	
+	public void putUnfinishedTasks(List<Task<?>> tasks) throws RemoteException;
 	
 	public void putWaitingTask(Task<?> task) throws RemoteException;
 	

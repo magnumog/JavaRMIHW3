@@ -40,6 +40,8 @@
 	<target name="runComputer">
 		<java jar="build/jar/Computer.jar" fork="true">
 			<arg value="${space_ip}"/>
+            <arg value="${multicore}"/>
+            <arg value="${acm}"/>
 			<jvmarg value="-Djava.security.policy=src/server.policy"/>
 		</java>
 	</target>
