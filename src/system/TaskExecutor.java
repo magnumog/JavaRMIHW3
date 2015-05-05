@@ -20,8 +20,8 @@ public class TaskExecutor extends Thread implements Runnable {
 		System.out.println(task);
 		task.execute().apply(left -> {
 			try {
-				space.putTasks(left);
 				space.putWaitingTask(task);
+				space.putTasks(left);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

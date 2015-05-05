@@ -1,10 +1,12 @@
 package system;
 
 import java.rmi.RemoteException;
+
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,8 +23,8 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 	private LinkedBlockingQueue<Task<?>> tasks;
 	private BlockingList<Task<?>> waitingTasks;
 	private BlockingList<Result<?>> results;
-	private HashMap<UUID, Task<?>> waitingTaskMap;
-	private HashMap<UUID, Result<?>> resultMap;
+	private ConcurrentHashMap<UUID, Task<?>> waitingTaskMap;
+	private ConcurrentHashMap<UUID, Result<?>> resultMap;
 	int i = 0;
 	int j = 0;
 	protected SpaceImpl() throws RemoteException {
@@ -30,8 +32,8 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 		tasks = new LinkedBlockingQueue<Task<?>>();
 		waitingTasks = new BlockingList<Task<?>>();
 		results = new BlockingList<Result<?>>();
-		waitingTaskMap = new HashMap<UUID, Task<?>>();
-		resultMap = new HashMap<UUID, Result<?>>();
+		waitingTaskMap = new ConcurrentHashMap<UUID, Task<?>>();
+		resultMap = new ConcurrentHashMap<UUID, Result<?>>();
 	}
 
 	@Override
@@ -54,23 +56,22 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 	@Override
 	public <A extends Result<?>> void registerResult(A result) throws RemoteException {
 			boolean isSubgoal = false;
-			synchronized(waitingTaskMap){
 			if (waitingTaskMap.containsKey(result.getOwner())){
 				Task<?> task = waitingTaskMap.get(result.getOwner());
 				if (task.registerResult(result)){
 					isSubgoal = true;
-					synchronized(tasks){
-						tasks.add(task);
-					}
+					tasks.add(task);
 					waitingTaskMap.remove(task.getUUID());
-					System.out.println(waitingTaskMap.size());
 				}
-			}
 			}
 
 			if (isSubgoal == false){
-				resultMap.put(result.getOwner(), result);
+				resultMap.putIfAbsent(result.getOwner(), result);
 			}
+			
+			
+			System.out.println(waitingTaskMap.size());
+
 	}
 	
 	

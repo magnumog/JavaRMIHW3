@@ -30,7 +30,9 @@ public class FibonnaciTask extends AbstractTask<Integer> {
 	@Override
 	public Either<List<FibonnaciTask>, FibonacciResult> execute() {
 		if (results.size() == 2){
-			FibonacciResult res = new FibonacciResult(this.parentuuid, results.get(0).value() + results.get(1).value());
+			Integer r1 = results.poll().value();
+			Integer r2 = results.poll().value();
+			FibonacciResult res = new FibonacciResult(this.parentuuid,  r1 + r2);
 			return Either.right(res);
 		}
 		
@@ -48,10 +50,10 @@ public class FibonnaciTask extends AbstractTask<Integer> {
 	}
 	@Override
 	public boolean registerResult(Result<?> result) {
-		this.results.add((Result<Integer>) result);
-		if (this.results.size() == 2){
-			return true;
-		}
+			this.results.add((Result<Integer>) result);
+			if (this.results.size() == 2){
+				return true;
+			}
 		return false;
 	}
 	

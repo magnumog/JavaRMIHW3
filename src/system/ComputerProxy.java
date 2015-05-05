@@ -32,7 +32,7 @@ public class ComputerProxy implements Runnable{
 						System.out.println(e);
 						return;
 					}
-				}
+			}
 		}
 	}
 }
