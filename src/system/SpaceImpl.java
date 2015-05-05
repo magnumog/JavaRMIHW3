@@ -68,9 +68,6 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 			if (isSubgoal == false){
 				resultMap.putIfAbsent(result.getOwner(), result);
 			}
-			
-			
-			System.out.println(waitingTaskMap.size());
 
 	}
 	

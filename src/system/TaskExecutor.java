@@ -17,7 +17,7 @@ public class TaskExecutor extends Thread implements Runnable {
 	
 	public <T> void execute(Task<T> task) {
 		// TODO Auto-generated method stub
-		System.out.println(task);
+
 		task.execute().apply(left -> {
 			try {
 				space.putWaitingTask(task);
